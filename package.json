@@ -5,7 +5,10 @@
   "main": "index.js",
   "scripts": {
     "server": "nodemon index.js",
-    "start": "node index.js"
+    "start": "node index.js",
+    "migrate": "knex migrate:latest",
+    "unmigrate": "knex migrate:rollback",
+    "seed": "knex seed:run "
   },
   "author": "Lambda School",
   "devDependencies": {
@@ -17,6 +20,6 @@
     "express": "^4.17.1",
     "helmet": "^3.22.0",
     "knex": "^0.21.1",
-    "pg": "^8.2.1"
+    "pg": "^8.0.3"
   }
 }
