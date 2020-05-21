@@ -74,6 +74,30 @@ router.delete("/:id", (req, res) => {
     });
 });
 
+// Endpoint to post a car
+router.post("/", validateCar, (req, res) => {
+  const newCar = req.body;
+  car
+    .addCar(newCar)
+    .then((car) => {
+      res.status(200).json({ message: `Car added successfully` });
+    })
+    .catch((error) => {
+      res.status(500).json({ message: error.message, stack: error.stack });
+    });
+});
+
+// Middleware for checking a car's details
+function validateCar(req, res, next) {
+  const newCar = req.body;
+  if (Object.keys(newCar).length < 1) {
+    res.status(400).json({ message: `Please enter a new car` });
+  } else if (!newCar.make || !newCar.VIN || !newCar.model || !newCar.mileage) {
+    res.status(400).json({ message: `Please enter all relevant fields` });
+  }
+  next();
+}
+
 // Middleware for validating a car by id
 function validateCarId(req, res, next) {
   const { id } = req.params; //The id comes from req.params

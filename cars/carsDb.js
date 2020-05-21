@@ -6,7 +6,7 @@ module.exports = {
   getCarById,
   updateCar,
   deleteCar,
-  //   addCar,
+  addCar,
 };
 
 // Helper function for retrieving all cars
@@ -29,4 +29,13 @@ function updateCar({ id, make, model, VIN, mileage }) {
 // Helper function to delete a car
 function deleteCar(id) {
   return db("cars").where({ id }).del();
+}
+// Helper function to add a car
+function addCar({ make, model, VIN, mileage }) {
+  return db("cars").insert({
+    make: make,
+    model: model,
+    VIN: VIN,
+    mileage: mileage,
+  });
 }
