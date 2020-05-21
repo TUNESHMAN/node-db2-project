@@ -42,11 +42,31 @@ router.put("/:id", (req, res) => {
       if (car) {
         res.status(200).json(car);
       } else {
+        res.status(404).json({
+          message: `The car ${id} does not exist. Hence update could not be done`,
+        });
+      }
+    })
+    .catch((error) => {
+      res.status(500).json({ message: error.message, stack: error.stack });
+    });
+});
+
+// Endpoint to delete a car
+router.delete("/:id", (req, res) => {
+  // It needs an Id
+  const { id } = req.params;
+  car
+    .deleteCar(id)
+    .then((car) => {
+      if (car) {
+        res
+          .status(200)
+          .json({ message: `The car with id ${id} has been deleted` });
+      } else {
         res
           .status(404)
-          .json({
-            message: `The car ${id} does not exist. Hence update could not be done`,
-          });
+          .json({ message: `The car with id ${id} does not exist` });
       }
     })
     .catch((error) => {
