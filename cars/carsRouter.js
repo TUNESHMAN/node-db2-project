@@ -26,6 +26,34 @@ router.get("/", (req, res) => {
 // Endpoint to get a car by its id
 router.get("/:id", validateCarId, (req, res) => {});
 
+// Endpoint to update cars
+router.put("/:id", (req, res) => {
+  const replacementCar = req.body;
+  const { id } = req.params;
+  car
+    .updateCar({
+      id,
+      make: replacementCar.make,
+      model: replacementCar.model,
+      VIN: replacementCar.VIN,
+      mileage: replacementCar.mileage,
+    })
+    .then((car) => {
+      if (car) {
+        res.status(200).json(car);
+      } else {
+        res
+          .status(404)
+          .json({
+            message: `The car ${id} does not exist. Hence update could not be done`,
+          });
+      }
+    })
+    .catch((error) => {
+      res.status(500).json({ message: error.message, stack: error.stack });
+    });
+});
+
 // Middleware for validating a car by id
 function validateCarId(req, res, next) {
   const { id } = req.params; //The id comes from req.params
@@ -34,8 +62,6 @@ function validateCarId(req, res, next) {
     .getCarById(id)
     .then((car) => {
       if (car) {
-        console.log(car);
-
         res.status(200).json(car);
       } else if (!car) {
         res
@@ -46,8 +72,6 @@ function validateCarId(req, res, next) {
       }
     })
     .catch((error) => {
-      console.log(c);
-
       res.status(500).json({ message: error.message, stack: error.stack });
     });
 }
