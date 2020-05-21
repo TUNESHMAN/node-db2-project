@@ -4,12 +4,15 @@ const cors = require("cors");
 const helmet = require("helmet");
 const server = express();
 
+// Link the server and the Router so that the endpoints can be accessed
+const carRouter = require("./cars/carsRouter");
+
 // Make use of the middleware
 server.use(express.json());
 server.use(cors());
 server.use(helmet());
 server.use(logger);
-
+server.use("/car", carRouter);
 // Flesh out a dummy API
 server.get("/", (req, res) => {
   res.json(`<h2>Welcome to Cars endpoint</h2>`);
