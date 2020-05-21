@@ -8,6 +8,7 @@ const server = express();
 server.use(express.json());
 server.use(cors());
 server.use(helmet());
+server.use(logger);
 
 // Flesh out a dummy API
 server.get("/", (req, res) => {
@@ -19,5 +20,14 @@ server.get("*", (req, res) => {
   res.send({ message: `Sorry, this is an invalid path` });
 });
 
+// Building a logger middleware
+function logger(req, res, next) {
+  console.log(
+    `[${new Date().toISOString()}] ${req.method} ${req.url} from ${req.get(
+      "Origin"
+    )}`
+  );
+  next();
+}
 // Export the server to the outer world
 module.exports = server;
